@@ -11,6 +11,9 @@
 |
 */
 
+//Route::get('/', 'PlatformsController@index');
+
+
 Route::get('/{any}', function(){
     return view('app');
 })->where('any', '[\/\w\.-]*');

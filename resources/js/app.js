@@ -17,32 +17,23 @@ Vue.use(Vuetify)
 
 import 'vuetify/dist/vuetify.min.css' 
 
-import Home from './components/HomeComponent.vue';
-import Login from './components/LoginComponent.vue';
-
-let app_url = window.location.pathname.split('/')
-app_url = '/'+app_url[1]+'/'+app_url[2]+'/'
-
+import Jeux from './components/JeuxComponent.vue';
+import About from './components/AboutComponent.vue';
 
 
 const router = new VueRouter({
   mode: 'history',
-  base: app_url,
+  base: window.axios.defaults.baseURL,
   routes: [
       {
-          path: '/home',
-          name: 'home',
-          component: Home
+          path: '/jeux',
+          name: 'Jeux',
+          component: Jeux
       },
       {
-          path: '/login',
-          name: 'login',
-          component: Login
-      },
-      {
-          path: '/duplicates',
-          name: 'Duplicates',
-          component: Login
+          path: '/about',
+          name: 'About',
+          component: About
       }
   ],
 })

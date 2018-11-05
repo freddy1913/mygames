@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\models\Platforms;
 
 class PlatformsController extends Controller 
 {
@@ -14,7 +15,7 @@ class PlatformsController extends Controller
    */
   public function index()
   {
-    
+    return response()->json(Platforms::all());
   }
 
   /**

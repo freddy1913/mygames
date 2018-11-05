@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\models\Games;
 
 class GamesController extends Controller 
 {
@@ -14,7 +15,7 @@ class GamesController extends Controller
    */
   public function index()
   {
-    
+      return response()->json(Games::with(['platforms'])->get());
   }
 
   /**

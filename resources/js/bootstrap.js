@@ -20,9 +20,14 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+let appurl = window.location.pathname.split('/');
+appurl = '/'+appurl[1]+'/'+appurl[2]+'/';
+
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.baseURL = appurl;
+
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
