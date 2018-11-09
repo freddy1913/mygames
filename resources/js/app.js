@@ -17,8 +17,9 @@ Vue.use(Vuetify)
 
 import 'vuetify/dist/vuetify.min.css' 
 
-import Jeux from './components/JeuxComponent.vue';
-import About from './components/AboutComponent.vue';
+import Jeux from './views/games/Game.vue';
+import About from './views/about/About.vue';
+
 
 
 const router = new VueRouter({
@@ -47,7 +48,7 @@ const router = new VueRouter({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('App', require('./components/App.vue'));
+Vue.component('App', require('./App.vue'));
 
 const app = new Vue({
     el: '#app',

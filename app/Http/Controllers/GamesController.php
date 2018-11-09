@@ -35,7 +35,13 @@ class GamesController extends Controller
    */
   public function store(Request $request)
   {
-    
+      $games = Games::create($request->all());
+
+      return response()->json([
+          'status' => (bool) $games,
+          'data'   => $games->load('platforms'),
+          'message' => $games ? 'jeu ajouté dans la liste' : 'Erreur ajout jeu'
+      ]);
   }
 
   /**

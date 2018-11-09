@@ -402,110 +402,6 @@ module.exports = g;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(23);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(8);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(8);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -612,6 +508,110 @@ module.exports = function normalizeComponent (
   }
 }
 
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(0);
+var normalizeHeaderName = __webpack_require__(23);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(8);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(8);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 4 */
@@ -24954,7 +24954,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(14);
-module.exports = __webpack_require__(56);
+module.exports = __webpack_require__(62);
 
 
 /***/ }),
@@ -24968,10 +24968,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuetify___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vuetify__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vuetify_dist_vuetify_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_JeuxComponent_vue__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_JeuxComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_JeuxComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AboutComponent_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_AboutComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_AboutComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_games_Game_vue__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__views_games_Game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__views_games_Game_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_about_About_vue__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__views_about_About_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__views_about_About_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -25000,11 +25000,11 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
     routes: [{
         path: '/jeux',
         name: 'Jeux',
-        component: __WEBPACK_IMPORTED_MODULE_3__components_JeuxComponent_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_3__views_games_Game_vue___default.a
     }, {
         path: '/about',
         name: 'About',
-        component: __WEBPACK_IMPORTED_MODULE_4__components_AboutComponent_vue___default.a
+        component: __WEBPACK_IMPORTED_MODULE_4__views_about_About_vue___default.a
     }]
 });
 
@@ -25014,7 +25014,7 @@ var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('App', __webpack_require__(53));
+Vue.component('App', __webpack_require__(65));
 
 var app = new Vue({
     el: '#app',
@@ -46200,7 +46200,7 @@ module.exports = __webpack_require__(20);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(6);
 var Axios = __webpack_require__(22);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -46283,7 +46283,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(31);
 var dispatchRequest = __webpack_require__(32);
@@ -46822,7 +46822,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(33);
 var isCancel = __webpack_require__(10);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var isAbsoluteURL = __webpack_require__(34);
 var combineURLs = __webpack_require__(35);
 
@@ -73331,15 +73331,19 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 47 */
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(48)
+var __vue_script__ = __webpack_require__(52)
 /* template */
-var __vue_template__ = __webpack_require__(49)
+var __vue_template__ = __webpack_require__(53)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73356,7 +73360,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/JeuxComponent.vue"
+Component.options.__file = "resources/js/components/DatePickerComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -73365,9 +73369,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-47bfacb8", Component.options)
+    hotAPI.createRecord("data-v-5f03dfe6", Component.options)
   } else {
-    hotAPI.reload("data-v-47bfacb8", Component.options)
+    hotAPI.reload("data-v-5f03dfe6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -73378,68 +73382,102 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 48 */
+/* 52 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_AddGameComponent_vue__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_AddGameComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__game_AddGameComponent_vue__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-
-
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    AddGame: __WEBPACK_IMPORTED_MODULE_0__game_AddGameComponent_vue___default.a
+
+  props: {
+    name: String,
+    label: String,
+    requis: { 'type': Boolean, 'default': true }
   },
-  data: function data() {
+
+  data: function data(vm) {
     return {
-      headers: [{
-        text: 'Nom',
-        align: 'left',
-        value: 'name'
-      }, { text: 'Sortie', value: 'release_date' }, { text: 'Platforme', value: 'platform' }, { text: 'Jeu terminé', value: 'is_finished' }, { text: 'Ajouté le', value: 'created_at' }],
-
-      jeux: []
-
+      date: new Date().toISOString().substr(0, 10),
+      dateFormatted: vm.formatDate(new Date().toISOString().substr(0, 10)),
+      menu1: false,
+      dateRules: [function (v) {
+        return !!v || 'Name is required';
+      }]
     };
   },
-  mounted: function mounted() {
-    var _this = this;
 
-    axios.get('/api/games').then(function (response) {
-      return _this.jeux = response.data;
-    }).catch(function (error) {});
+  computed: {
+    computedDateFormatted: function computedDateFormatted() {
+      return this.formatDate(this.date);
+    }
+  },
+
+  watch: {
+    date: function date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+    }
+  },
+
+  methods: {
+    formatDate: function formatDate(date) {
+      if (!date) return null;
+
+      var _date$split = date.split('-'),
+          _date$split2 = _slicedToArray(_date$split, 3),
+          year = _date$split2[0],
+          month = _date$split2[1],
+          day = _date$split2[2];
+
+      return day + '/' + month + '/' + year;
+    },
+    parseDate: function parseDate(date) {
+      if (!date) return null;
+
+      var _date$split3 = date.split('/'),
+          _date$split4 = _slicedToArray(_date$split3, 3),
+          day = _date$split4[0],
+          month = _date$split4[1],
+          year = _date$split4[2];
+
+      return year + '-' + month.padStart(2, '0') + '-' + day.padStart(2, '0');
+    }
   }
 });
 
 /***/ }),
-/* 49 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73447,40 +73485,67 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-menu",
+    {
+      ref: "menu1",
+      attrs: {
+        "close-on-content-click": false,
+        "nudge-right": 40,
+        lazy: "",
+        transition: "scale-transition",
+        "offset-y": "",
+        "full-width": "",
+        "max-width": "290px",
+        "min-width": "290px"
+      },
+      model: {
+        value: _vm.menu1,
+        callback: function($$v) {
+          _vm.menu1 = $$v
+        },
+        expression: "menu1"
+      }
+    },
     [
-      _c("v-data-table", {
-        staticClass: "elevation-1",
-        attrs: { headers: _vm.headers, items: _vm.jeux, "hide-actions": "" },
-        scopedSlots: _vm._u([
-          {
-            key: "items",
-            fn: function(props) {
-              return [
-                _c("td", [_vm._v(_vm._s(props.item.name))]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-left" }, [
-                  _vm._v(_vm._s(props.item.release_date))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-left" }, [
-                  _vm._v(_vm._s(props.item.platforms.name))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-left" }, [
-                  _vm._v(_vm._s(props.item.is_finished))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "text-xs-left" }, [
-                  _vm._v(_vm._s(props.item.created_at))
-                ])
-              ]
-            }
+      _c("v-text-field", {
+        attrs: {
+          slot: "activator",
+          rules: _vm.requis ? _vm.dateRules : [],
+          label: _vm.label,
+          name: _vm.name,
+          "persistent-hint": "",
+          readonly: ""
+        },
+        on: {
+          blur: function($event) {
+            _vm.date = _vm.parseDate(_vm.dateFormatted)
           }
-        ])
+        },
+        slot: "activator",
+        model: {
+          value: _vm.dateFormatted,
+          callback: function($$v) {
+            _vm.dateFormatted = $$v
+          },
+          expression: "dateFormatted"
+        }
       }),
       _vm._v(" "),
-      _c("AddGame")
+      _c("v-date-picker", {
+        attrs: { "no-title": "" },
+        on: {
+          input: function($event) {
+            _vm.menu1 = false
+          }
+        },
+        model: {
+          value: _vm.date,
+          callback: function($$v) {
+            _vm.date = $$v
+          },
+          expression: "date"
+        }
+      })
     ],
     1
   )
@@ -73491,23 +73556,36 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-47bfacb8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-5f03dfe6", module.exports)
   }
 }
 
 /***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 63 */,
+/* 64 */,
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(54)
+var __vue_script__ = __webpack_require__(66)
 /* template */
-var __vue_template__ = __webpack_require__(55)
+var __vue_template__ = __webpack_require__(67)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73524,7 +73602,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/App.vue"
+Component.options.__file = "resources/js/App.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -73533,9 +73611,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-332fccf4", Component.options)
+    hotAPI.createRecord("data-v-f348271a", Component.options)
   } else {
-    hotAPI.reload("data-v-332fccf4", Component.options)
+    hotAPI.reload("data-v-f348271a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -73546,7 +73624,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73627,7 +73705,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 55 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73777,28 +73855,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-332fccf4", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f348271a", module.exports)
   }
 }
 
 /***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 57 */,
-/* 58 */,
-/* 59 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(60)
+var __vue_script__ = __webpack_require__(69)
 /* template */
-var __vue_template__ = __webpack_require__(61)
+var __vue_template__ = __webpack_require__(70)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -73815,7 +73885,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/AboutComponent.vue"
+Component.options.__file = "resources/js/views/about/About.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -73824,9 +73894,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5049bb1b", Component.options)
+    hotAPI.createRecord("data-v-793a8e88", Component.options)
   } else {
-    hotAPI.reload("data-v-5049bb1b", Component.options)
+    hotAPI.reload("data-v-793a8e88", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -73837,7 +73907,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 69 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73903,7 +73973,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 61 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -73999,20 +74069,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5049bb1b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-793a8e88", module.exports)
   }
 }
 
 /***/ }),
-/* 62 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(63)
+var __vue_script__ = __webpack_require__(72)
 /* template */
-var __vue_template__ = __webpack_require__(64)
+var __vue_template__ = __webpack_require__(73)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -74029,7 +74099,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/game/AddGameComponent.vue"
+Component.options.__file = "resources/js/views/games/Game.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -74038,9 +74108,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f4135428", Component.options)
+    hotAPI.createRecord("data-v-367810df", Component.options)
   } else {
-    hotAPI.reload("data-v-f4135428", Component.options)
+    hotAPI.reload("data-v-367810df", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -74051,11 +74121,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 63 */
+/* 72 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Add_game_vue__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Add_game_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Add_game_vue__);
 //
 //
 //
@@ -74068,6 +74140,236 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AddGame: __WEBPACK_IMPORTED_MODULE_0__Add_game_vue___default.a
+  },
+  data: function data() {
+    return {
+      headers: [{
+        text: 'Nom',
+        align: 'left',
+        value: 'name'
+      }, { text: 'Sortie', value: 'release_date' }, { text: 'Platforme', value: 'platform' }, { text: 'Jeu terminé', value: 'is_finished' }, { text: 'Ajouté le', value: 'created_at' }],
+
+      jeux: [],
+
+      loadingstate: true,
+      alert: false,
+      alertMessage: '',
+      pagination: {
+        rowsPerPage: 10 // -1 for All
+      }
+
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/api/games').then(function (response) {
+      return _this.jeux = response.data;
+    }).then(function () {
+      return _this.loadingstate = false;
+    }).catch(function (error) {});
+  },
+
+
+  methods: {
+    getInfo: function getInfo(value) {
+      this.alert = value.status;
+      this.alertMessage = value.message;
+      this.jeux.push(value.data);
+    }
+  }
+
+});
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c(
+        "v-flex",
+        { attrs: { "pb-2": "" } },
+        [
+          _c(
+            "v-alert",
+            {
+              attrs: { dismissible: "", type: "success" },
+              model: {
+                value: _vm.alert,
+                callback: function($$v) {
+                  _vm.alert = $$v
+                },
+                expression: "alert"
+              }
+            },
+            [_vm._v("\r\n      " + _vm._s(_vm.alertMessage) + "\r\n    ")]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-data-table",
+        {
+          staticClass: "elevation-1",
+          attrs: {
+            headers: _vm.headers,
+            items: _vm.jeux,
+            loading: _vm.loadingstate,
+            pagination: _vm.pagination
+          },
+          on: {
+            "update:pagination": function($event) {
+              _vm.pagination = $event
+            }
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "items",
+              fn: function(props) {
+                return [
+                  _c("td", [_vm._v(_vm._s(props.item.name))]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-xs-left" }, [
+                    _vm._v(_vm._s(props.item.release_date))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-xs-left" }, [
+                    _vm._v(_vm._s(props.item.platforms.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-xs-left" }, [
+                    _vm._v(_vm._s(props.item.is_finished))
+                  ]),
+                  _vm._v(" "),
+                  _c("td", { staticClass: "text-xs-left" }, [
+                    _vm._v(_vm._s(props.item.created_at))
+                  ])
+                ]
+              }
+            }
+          ])
+        },
+        [
+          _c("v-progress-linear", {
+            attrs: { slot: "progress", color: "blue", indeterminate: "" },
+            slot: "progress"
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("AddGame", { on: { sendinfo: _vm.getInfo } })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-367810df", module.exports)
+  }
+}
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(75)
+/* template */
+var __vue_template__ = __webpack_require__(76)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/views/games/Add_game.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-653b3c3d", Component.options)
+  } else {
+    hotAPI.reload("data-v-653b3c3d", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DatePickerComponent_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_DatePickerComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_DatePickerComponent_vue__);
 //
 //
 //
@@ -74121,12 +74423,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+
+    components: {
+        datePicker: __WEBPACK_IMPORTED_MODULE_0__components_DatePickerComponent_vue___default.a
+    },
+
     data: function data() {
         return {
             dialog: false,
             platforms: [],
-            is_finished: false
+            is_finished: false,
+            valid: true,
+            name: '',
+            platform_id: '',
+            nameRules: [function (v) {
+                return !!v || 'Name is required';
+            }, function (v) {
+                return v && v.length <= 30 && v.length >= 2 || 'Name must be less than 30 and greater than 2 characters';
+            }]
 
         };
     },
@@ -74136,11 +74453,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         axios.get('/api/platforms').then(function (response) {
             return _this.platforms = response.data;
         }).catch(function (error) {});
+    },
+
+
+    methods: {
+        submit: function submit() {
+            var _this2 = this;
+
+            if (this.$refs.form.validate()) {
+                // Native form submission is not yet supported
+                axios.post('/api/games', {
+                    'platform_id': this.platform_id,
+                    'name': this.name,
+                    'is_finished': this.is_finished,
+                    'release_date': '08/10/2018',
+                    'created_at': '06/01/2018'
+                }).then(function (response) {
+                    return _this2.onSubmitData(response.data);
+                }).then(function () {
+                    _this2.$refs.form.reset();
+                    _this2.dialog = false;
+                });
+            }
+        },
+        clear: function clear() {
+            this.$refs.form.reset();
+        },
+        onSubmitData: function onSubmitData(response) {
+            this.$emit('sendinfo', response);
+        }
     }
 });
 
 /***/ }),
-/* 64 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -74189,101 +74535,124 @@ var render = function() {
             "v-card",
             [
               _c("v-card-title", { staticClass: "grey lighten-4 py-4 title" }, [
-                _vm._v("\n          Encoder un nouveau jeu\n        ")
+                _c("span", [
+                  _c("i", { staticClass: "material-icons" }, [_vm._v("games")]),
+                  _vm._v(" Encoder un nouveau jeu")
+                ])
               ]),
               _vm._v(" "),
               _c(
-                "v-container",
-                { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
                 [
                   _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
+                    "v-container",
+                    { staticClass: "pa-4", attrs: { "grid-list-sm": "" } },
                     [
                       _c(
-                        "v-flex",
-                        {
-                          attrs: {
-                            xs12: "",
-                            "align-center": "",
-                            "justify-space-between": ""
-                          }
-                        },
+                        "v-layout",
+                        { attrs: { row: "", wrap: "" } },
                         [
                           _c(
-                            "v-layout",
-                            { attrs: { "align-center": "" } },
+                            "v-flex",
+                            { attrs: { xs12: "" } },
                             [
                               _c("v-text-field", {
-                                attrs: { placeholder: "Name" }
+                                attrs: {
+                                  name: "name",
+                                  rules: _vm.nameRules,
+                                  counter: 30,
+                                  maxlength: "30",
+                                  label: "Nom du jeu",
+                                  required: ""
+                                },
+                                model: {
+                                  value: _vm.name,
+                                  callback: function($$v) {
+                                    _vm.name = $$v
+                                  },
+                                  expression: "name"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-select", {
+                                attrs: {
+                                  name: "platform_id",
+                                  rules: [
+                                    function(v) {
+                                      return !!v || "Item is required"
+                                    }
+                                  ],
+                                  items: _vm.platforms,
+                                  "item-text": "name",
+                                  "item-value": "id",
+                                  label: "Plateforme"
+                                },
+                                model: {
+                                  value: _vm.platform_id,
+                                  callback: function($$v) {
+                                    _vm.platform_id = $$v
+                                  },
+                                  expression: "platform_id"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("datePicker", {
+                                attrs: {
+                                  name: "release_date",
+                                  requis: true,
+                                  label: "Date de sortie"
+                                }
+                              })
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-flex",
+                            { attrs: { xs12: "" } },
+                            [
+                              _c("v-checkbox", {
+                                attrs: {
+                                  name: "is_finished",
+                                  label: "Jeu terminé",
+                                  value: ""
+                                },
+                                model: {
+                                  value: _vm.is_finished,
+                                  callback: function($$v) {
+                                    _vm.is_finished = $$v
+                                  },
+                                  expression: "is_finished"
+                                }
                               })
                             ],
                             1
                           )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "" } },
-                        [
-                          _c("v-select", {
-                            attrs: {
-                              items: _vm.platforms,
-                              "item-text": "name",
-                              "item-value": "id",
-                              label: "Plateforme"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: {
-                              slot: "activator",
-                              label: "Date",
-                              hint: "MM/DD/YYYY format",
-                              "persistent-hint": "",
-                              "prepend-icon": "event"
-                            },
-                            on: {
-                              blur: function($event) {
-                                _vm.date = _vm.parseDate(_vm.dateFormatted)
-                              }
-                            },
-                            slot: "activator",
-                            model: {
-                              value: _vm.dateFormatted,
-                              callback: function($$v) {
-                                _vm.dateFormatted = $$v
-                              },
-                              expression: "dateFormatted"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "" } },
-                        [
-                          _c("v-checkbox", {
-                            attrs: { label: "Jeu terminé", value: "" },
-                            model: {
-                              value: _vm.is_finished,
-                              callback: function($$v) {
-                                _vm.is_finished = $$v
-                              },
-                              expression: "is_finished"
-                            }
-                          })
                         ],
                         1
                       )
@@ -74302,6 +74671,15 @@ var render = function() {
                   _c(
                     "v-btn",
                     {
+                      attrs: { flat: "", ripple: "" },
+                      on: { click: _vm.clear }
+                    },
+                    [_vm._v("Nettoyer")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "v-btn",
+                    {
                       attrs: { flat: "", color: "primary" },
                       on: {
                         click: function($event) {
@@ -74314,14 +74692,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "v-btn",
-                    {
-                      attrs: { flat: "" },
-                      on: {
-                        click: function($event) {
-                          _vm.dialog = false
-                        }
-                      }
-                    },
+                    { attrs: { flat: "" }, on: { click: _vm.submit } },
                     [_vm._v("Ajouter")]
                   )
                 ],
@@ -74343,7 +74714,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f4135428", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-653b3c3d", module.exports)
   }
 }
 
